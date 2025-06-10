@@ -41,7 +41,7 @@ class Category(Enum):
 class Post(db.Model):
     __tablename__ = 'post'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey('User.id'), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
     post_title: Mapped[str] = mapped_column(String(255), nullable=False)
     post_text: Mapped[str] = mapped_column(String(2200), nullable=False)
     tag_cat: Mapped[Category] = mapped_column(SqlEnum(Category, name="category_enum"), nullable=False)
@@ -66,7 +66,7 @@ class Media(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     media_type: Mapped[MediaType] = mapped_column(SqlEnum(MediaType, name="media_type_enum"), nullable=False)
     url: Mapped[str] = mapped_column(Text, nullable=False)
-    post_id: Mapped[int] = mapped_column(ForeignKey('POST.id'), nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), nullable=False)
 
     post: Mapped["Post"] = relationship("Post", back_populates="media")
 
@@ -81,8 +81,8 @@ class Comment(db.Model):
     __tablename__ = 'comment'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     comment_text: Mapped[str] = mapped_column(String(1000), nullable=False)
-    author_id: Mapped[int] = mapped_column(ForeignKey('User.id'), nullable=False)
-    post_id: Mapped[int] = mapped_column(ForeignKey('POST.id'), nullable=False)
+    author_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now())
     
@@ -92,8 +92,8 @@ class Comment(db.Model):
 class Favorites(db.Model):
     __tablename__ = 'favorites'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    fav_user_id: Mapped[int] = mapped_column(ForeignKey('User.id'), nullable=False)
-    post_id: Mapped[int] = mapped_column(ForeignKey('POST.id'), nullable=False)
+    fav_user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), nullable=False)
 
     post: Mapped["Post"] = relationship("Post", back_populates="favorites")
 
